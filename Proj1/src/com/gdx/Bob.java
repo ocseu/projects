@@ -4,6 +4,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bob {
+	public Vector2 getPosition() {
+		return position;
+	}
+
+	public Rectangle getBounds() {
+		return bounds;
+	}
+
 	public enum State {
 		IDLE, WALKING, JUMPING, DYING
 	}
