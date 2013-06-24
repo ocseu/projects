@@ -35,11 +35,6 @@ public class GameScreen implements Screen{
 		renderer.render();		
 	}
 
-	@Override
-	public void resize(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void resume() {
@@ -51,7 +46,12 @@ public class GameScreen implements Screen{
 	public void show() {
 		// TODO Auto-generated method stub
 		world = new World();
-		renderer = 	new WorldRenderer(world);
+		renderer = 	new WorldRenderer(world, true);
+	}
+	
+	@Override
+	public void resize(int width, int height) {
+		renderer.setSize(width, height);
 	}
 	
 }
