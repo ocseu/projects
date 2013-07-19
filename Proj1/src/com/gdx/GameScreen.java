@@ -12,7 +12,7 @@ public class GameScreen implements Screen, InputProcessor{
 	
 	private World world;
 	private WorldRenderer renderer;
-	private WorldController controller;
+	private BobController controller;
 	
 	private int width, height;
 	
@@ -56,7 +56,7 @@ public class GameScreen implements Screen, InputProcessor{
 		// TODO Auto-generated method stub
 		world = new World();
 		renderer = 	new WorldRenderer(world, true);
-		controller = new WorldController(world);
+		controller = new BobController(world);
 		Gdx.input.setInputProcessor(this);
 	}
 	
@@ -79,7 +79,7 @@ public class GameScreen implements Screen, InputProcessor{
 		} else if(arg0 == Keys.X) {
 			controller.firePressed();
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class GameScreen implements Screen, InputProcessor{
 		} else if(arg0 == Keys.X) {
 			controller.fireReleased();
 		}
-		return false;
+		return true;
 	}
 
 	@Override
@@ -118,9 +118,9 @@ public class GameScreen implements Screen, InputProcessor{
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		// TODO Auto-generated method stub
-		if(!Gdx.app.getType().equals(ApplicationType.Android)) {
-			return false;
-		}
+//		if(!Gdx.app.getType().equals(ApplicationType.Android)) {
+//			return false;
+//		}
 		
 		if(x < width/2 && y > height /2) {
 			controller.leftPressed();
@@ -141,9 +141,9 @@ public class GameScreen implements Screen, InputProcessor{
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
 		
-		if(!Gdx.app.getType().equals(ApplicationType.Android)) {
-			return false;
-		}
+//		if(!Gdx.app.getType().equals(ApplicationType.Android)) {
+//			return false;
+//		}
 		
 		// TODO Auto-generated method stub
 		if(x < width/2 && y > height /2) {
