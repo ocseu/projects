@@ -1,10 +1,15 @@
 package com.gdx;
 
+
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
 import com.gdx.Bob.State;
 
+import android.graphics.Rect;
 import android.inputmethodservice.Keyboard.Key;
 
 public class BobController {
@@ -26,8 +31,12 @@ public class BobController {
 
 	private long jumpPressedTime;
 	private boolean jumpingPressed;
+//	private boolean ground = false;
 
 	static Map<Keys, Boolean> keys = new HashMap<BobController.Keys, Boolean>();
+	
+	Array<Block> collidable = new Array<Block>();
+	
 	static {
 		keys.put(Keys.LEFT, false);
 		keys.put(Keys.RIGHT, false);
@@ -54,7 +63,7 @@ public class BobController {
 	}
 
 	public void firePressed() {
-		keys.get(keys.put(Keys.JUMP, true));
+		keys.get(keys.put(Keys.FIRE, true));
 	}
 
 	public void leftReleased() {
@@ -74,15 +83,25 @@ public class BobController {
 		keys.get(keys.put(Keys.FIRE, false));
 	}
 
+	boolean ground = false;
 	/* main update method */
 	public void update(float delta) {
 		processInput();
 		// bob.update(delta);
-
+		
+		if(ground && bob.getState().equals(State.JUMPING)) {
+			bob.setState(State.IDLE);
+		}
+		
+		
 		bob.getAcceleration().y = GRAVITY;
-		bob.getAcceleration().mul(delta);
+		
+		bob.getAcceleration().scl(delta);
 
 		bob.getVelocity().add(bob.getAcceleration().x, bob.getAcceleration().y);
+		
+		
+		
 		if (bob.getAcceleration().x == 0) {
 			bob.getVelocity().x *= DAMP;
 		}
@@ -175,5 +194,26 @@ public class BobController {
 		}
 		
 		return false;
+	}
+	
+	private Pool<Rectangle> rectPool =new Pool<Rectangle>() {
+		protected Rectangle newObject() {
+			return new Rectangle();
+		}
+	};
+	
+	private void checkCollisionWithBlocks(float delta) {
+		bob.getVelocity().mul(delta);
+		Rectangle bobRect = rectPool.obtain();
+		bobRect.set(bob.getBounds().x, bob.getBounds().y,bob.getBounds().getWidth(), bob.getBounds().getHeight());
+		
+		int startX, endX;
+		int startY = (int) bob.getBounds().y;
+		int endY = (int) (bob.getBounds().y  + bob.getBounds().height);
+		
+		
+		if(bob.getVelocity().x < 0) {
+			startX = endX = (int) Math.floor(bob.getBounds().x + bob.getVelocity().x);
+		}
 	}
 }
